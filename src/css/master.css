@@ -1,0 +1,37 @@
+html body {
+    margin: 20px 0 0 0;
+    height: 100%;
+}
+
+#main_container {
+    background-color: blue;
+    margin: 0 40px 0 40px;
+}
+
+.cont_editable {
+    height: 500px;
+    width: 50%;
+    float: left;
+    border-right: thick solid black;
+    padding: 10px;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.cont_editable p {
+    font-family: "Courier New", monospace;
+}
+
+.cont_preview {
+    height: 500px;
+    width: 50%;
+    float: right;
+    background: yellow;
+    padding: 10px;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
