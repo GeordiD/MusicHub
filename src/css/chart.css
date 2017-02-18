@@ -1,0 +1,42 @@
+.chart_main {
+    height: 500px;
+    width: 50%;
+    float: left;
+    padding: 10px;
+
+    /*For testing purposes*/
+    border: thick solid black;
+    /*End test*/
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+
+    font-family: "Arial", sans-serif;
+}
+
+.chart_main p {
+    font-family: "Arial", monospace;
+}
+
+.chart-header-cont {
+    border-bottom: solid black;
+    overflow: auto;
+    display: table;
+    width: 100%;
+}
+
+.chart-header-cont h1 {
+    float: left;
+}
+
+.chart-header-key {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.chart-content {
+    padding: 25px;
+}
