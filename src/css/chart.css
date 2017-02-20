@@ -39,4 +39,9 @@
 
 .chart-content {
     padding: 25px;
+    position: absolute;
+}
+
+.chord {
+    position: absolute;
 }
