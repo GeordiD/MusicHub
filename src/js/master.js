@@ -8,8 +8,9 @@ function getPadding(element) {
 
 $(document).ready(function() {
 
-    var atest = $('#splendor').position().left - getPadding($('.chart-content'));
-    var test = atest + ($("#splendor").width()) / 2;
+    var atest = $('#chord_id').position().left
+        - getPadding($('.chart-content'));
+    var test = atest + ($("#chord_id").width()) / 2;
 
     console.log(test);
 });

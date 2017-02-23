@@ -45,3 +45,29 @@
 .chord {
     position: absolute;
 }
+
+#splendor {
+
+}
+
+.test_cont {
+    white-space:nowrap;
+}
+
+.res-line {
+    display: block;
+}
+
+@media screen and (min-width:360px) {
+    .res-line {
+        display: inline;
+    }
+}
+
+#test_width_line {
+    postion:absolute;
+    height: 100%;
+    width: 5px;
+    background: grey;
+    margin-left: 400px; /* width + 40px */
+}
