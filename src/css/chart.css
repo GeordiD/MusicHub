@@ -1,6 +1,6 @@
 .chart_main {
     height: 500px;
-    width: 50%;
+    width: 80%;
     float: left;
     padding: 10px;
 
@@ -23,7 +23,7 @@
     border-bottom: solid black;
     overflow: auto;
     display: table;
-    width: 100%;
+    /*width: 100%;*/
 }
 
 .chart-header-cont h1 {
@@ -43,11 +43,12 @@
 }
 
 .chord {
-    position: absolute;
+    color: blue;
+
 }
 
-#splendor {
-
+#readindoc {
+    display: inline-block;
 }
 
 .test_cont {
