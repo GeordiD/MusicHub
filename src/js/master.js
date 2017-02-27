@@ -101,11 +101,15 @@ function addSpansToChords() {
 
         nHtml+=char;
     }
-    div.html(nHtml);
+    div.append(nHtml);
 
-    var test = nHtml;
+    var test = "no test"
     console.log(typeof test);
     console.log(test);
+}
+
+function centerChordOnDiv(div, chord) {
+    return div.width()/2 + div.get(0).offsetLeft - chord.width()/2;
 }
 
 $(document).ready(function() {
@@ -116,11 +120,22 @@ $(document).ready(function() {
 
     addSpansToChords();
 
-    $('.chord').each(function(i, x) {
-        console.log(x.offsetLeft + ", " + x.offsetTop);
-        console.log(x);
+    var id = 0
+    var from = $('#readInDoc');
+
+    var chords = $('.chord');
+    chords.each(function(i, x) {
+        $('#chord_holder').append("<div id='chord_" + id +"'> G" + id + "</div>");
+
+        //TODO: this returns 'normal', not a px dimin we can use
+        console.log(chords.eq(i).css('line-height'));
+
+        var elemid = "chord_" + id;
+        var elem = $('#'+elemid);
+        elem.css("position", "absolute");
+        elem.css("left", centerChordOnDiv(chords.eq(i), elem));
+        elem.css("top", x.offsetTop);
+        id++;
     });
-
-
 });
 

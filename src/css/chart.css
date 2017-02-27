@@ -49,6 +49,7 @@
 
 #readindoc {
     display: inline-block;
+    position: relative;
 }
 
 .test_cont {
