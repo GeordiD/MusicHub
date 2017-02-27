@@ -86,7 +86,7 @@ function addSpansToChords() {
                 //Add start of span
                 nHtml+="<span class='chord'>";
                 //Add a line break
-                nHtml = nHtml.splice(lastBreak, 0, "<br>");
+                nHtml = nHtml.splice(lastBreak, 0, "<br><span class='add-chords'></span>");
             } else {
                 //Add end of span
                 nHtml+="</span>";
@@ -95,16 +95,9 @@ function addSpansToChords() {
 
         if(char === "<") {
             if(textFileStr.substring(i, i+4) === "<br>") {
-                lastBreak = i+4;
+                lastBreak = nHtml.length;
             }
         }
-
-        /*
-        What is happening is the lastBreak is being set based
-        on textFileStr index, rather than the nHtml index
-        It's the correct index in the string, just wrong in the html
-        cause we've been changing the indices
-         */
 
         nHtml+=char;
     }
@@ -122,6 +115,12 @@ $(document).ready(function() {
     // console.log(test);
 
     addSpansToChords();
+
+    $('.chord').each(function(i, x) {
+        console.log(x.offsetLeft + ", " + x.offsetTop);
+        console.log(x);
+    });
+
 
 });
 
