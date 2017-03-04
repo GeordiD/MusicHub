@@ -112,6 +112,12 @@ function centerChordOnDiv(div, chord) {
     return div.width()/2 + div.get(0).offsetLeft - chord.width()/2;
 }
 
+function getLineHeight(el){
+    return parseInt(el.css("line-height"));
+    //var fontSize = $(el).css('font-size');
+    //return Math.floor(parseInt(fontSize.replace('px','')) * 1.5);
+}
+
 $(document).ready(function() {
 
     // var atest = $('#chord_id').position().left - getPadding($('.chart-content'));
@@ -125,10 +131,7 @@ $(document).ready(function() {
 
     var chords = $('.chord');
     chords.each(function(i, x) {
-        $('#chord_holder').append("<div id='chord_" + id +"'> G" + id + "</div>");
-
-        //TODO: this returns 'normal', not a px dimin we can use
-        console.log(chords.eq(i).css('line-height'));
+        $('#chord_holder').append("<div id='chord_" + id +"'>splendor</div>");
 
         var elemid = "chord_" + id;
         var elem = $('#'+elemid);
@@ -137,5 +140,13 @@ $(document).ready(function() {
         elem.css("top", x.offsetTop);
         id++;
     });
+
+    var elem = $('#chord_0');
+    elem.css("top", 48);
+
+
+    console.log("font-size = " + from.css("font-size"));
+    console.log("getLineHeight = " + getLineHeight(from));
+    console.log("top = " + chords.get(0).offsetTop);
 });
 

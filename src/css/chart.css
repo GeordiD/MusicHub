@@ -50,6 +50,12 @@
 #readindoc {
     display: inline-block;
     position: relative;
+    line-height: 300%;
+}
+
+#chord_holder {
+    color: red;
+    line-height: 300%;
 }
 
 .test_cont {
