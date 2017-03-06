@@ -42,20 +42,28 @@
     position: absolute;
 }
 
+.add-chords {
+
+}
+
 .chord {
-    color: blue;
+    position: absolute;
+}
+
+.chord_loc {
+
 
 }
 
 #readindoc {
     display: inline-block;
     position: relative;
-    line-height: 300%;
+    line-height: 100%;
 }
 
 #chord_holder {
     color: red;
-    line-height: 300%;
+    line-height: 100%;
 }
 
 .test_cont {
