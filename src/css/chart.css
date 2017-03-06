@@ -1,0 +1,89 @@
+.chart_main {
+    height: 500px;
+    width: 80%;
+    float: left;
+    padding: 10px;
+
+    /*For testing purposes*/
+    border: thick solid black;
+    /*End test*/
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+
+    font-family: "Arial", sans-serif;
+}
+
+.chart_main p {
+    font-family: "Arial", monospace;
+}
+
+.chart-header-cont {
+    border-bottom: solid black;
+    overflow: auto;
+    display: table;
+    /*width: 100%;*/
+}
+
+.chart-header-cont h1 {
+    float: left;
+}
+
+.chart-header-key {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.chart-content {
+    padding: 25px;
+    position: absolute;
+}
+
+.add-chords {
+
+}
+
+.chord {
+    position: absolute;
+}
+
+.chord_loc {
+
+
+}
+
+#readindoc {
+    display: inline-block;
+    position: relative;
+    line-height: 100%;
+}
+
+#chord_holder {
+    color: red;
+    line-height: 100%;
+}
+
+.test_cont {
+    white-space:nowrap;
+}
+
+.res-line {
+    display: block;
+}
+
+@media screen and (min-width:360px) {
+    .res-line {
+        display: inline;
+    }
+}
+
+#test_width_line {
+    postion:absolute;
+    height: 100%;
+    width: 5px;
+    background: grey;
+    margin-left: 360px; /* width + 40px */
+}
