@@ -6,7 +6,15 @@ if (!String.prototype.splice) {
     };
 }
 
-function getTextFile(file)
+if(!String.prototype.charMap) {
+    String.prototype.charMap = function(funct) {
+        for(let i = 0, len = this.length; i < len; i++) {
+            funct(this.charAt(i));
+        }
+    }
+}
+
+function getTextFile(file, /*boolean*/removeLineBreaks)
 {
     var allText;
 
@@ -23,6 +31,18 @@ function getTextFile(file)
         }
     };
     rawFile.send(null);
+
+    if(typeof removeLineBreaks !== "undefined" && removeLineBreaks === true) {
+        let copyText = "";
+        allText.charMap((x)=>{
+            let charCode = x.charCodeAt(0);
+            if(charCode !== 10 && charCode !== 13) {
+                copyText += x;
+            }
+        })
+
+        return copyText;
+    }
 
     return allText;
 }

@@ -4,8 +4,7 @@ $(document).ready(function() {
     mChordManager = new ChordManger();
     $main = $('#readInDoc');
 
-    readChart(getTextFile("src/testFiles/test.txt"));
-
+    readChart(getTextFile("src/testFiles/test.txt", true));
 });
 
 // --- Classes ---

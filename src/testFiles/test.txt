@@ -1,5 +1,4 @@
-
 The {c='1'}splendor{/c} of the king {br}
 {c='6m'}Clothed{/c} in majesty {br}
-Let {c='5'}all{/c} the earth {c='4'}rejoice{/c} {br}
+Let {c='5'}all{/c} the earth {c='4'}rejoice{/c}{br}
 All the earth rejoice {br}
