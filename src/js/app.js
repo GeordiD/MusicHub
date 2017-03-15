@@ -1,8 +1,79 @@
 $(document).ready(function() {
 
-    processTag("{/c}");
+    //State initialization
+    mChordManager = new ChordManger();
+    $main = $('#readInDoc');
+
+    readChart(getTextFile("src/testFiles/test.txt"));
 
 });
+
+// --- Classes ---
+
+function ChordManger() {
+
+    var id = 0;
+
+    this.open = false; //bool: are we in the middle of placing a chord?
+
+    this.incrementId = function() {
+        id++;
+        return getId;
+    }
+    this.getId = function() {return id};
+
+    this.isOpen = function(/*boolean*/value) {
+        if(typeof value === "boolean") {
+            this.open = value;
+        }
+        return this.open;
+    }
+}
+
+// --- State Variables ---
+
+var mChordManager;
+var $main;
+
+// --- End Variables ---
+
+
+function readChart(sFile) {
+    //Declare all variables
+    var char,
+        /*string*/ sBuffer = "",
+        /*boolean*/ inTag = false;
+
+    for(var i = 0, len = sFile.length; i < len; i++) {
+        char = sFile[i];
+
+        if(inTag) {
+            if(char == "}") {
+                //process tag
+                processTag(sBuffer);
+                //Clear buffer
+                sBuffer = "";
+                //Mark as out of tag
+                inTag = false;
+            } else {
+                sBuffer += char;
+            }
+        } else {
+            if(char == "{") {
+                //Append the buffer
+                $main.append(sBuffer);
+                //Clear buffer
+                sBuffer = "";
+                //Mark as in tag
+                inTag = true;
+            } else {
+                sBuffer += char;
+            }
+        }
+
+    }
+}
+
 
 // --- Tag Processing ---
 
@@ -43,19 +114,6 @@ function processTag(/*string*/sTag) {
 
 // Chord Tag ---
 
-function ChordManger() {
-
-    var id = 0;
-
-    this.open = false; //bool: are we in the middle of placing a chord?
-
-    this.incrementId = function() {
-        id++;
-        return getId;
-    }
-    this.getId = function() {return id};
-}
-
 function processChordTag(sTagContents) {
     console.log("processChord");
 
@@ -76,7 +134,7 @@ function processEndChordTag() {
 // Break Tag ---
 
 function processBreakTag(sTagContents) {
-    console.log("processBreak");
+    $main.append("<br>");
 }
 
 // --- Helper Funcions ---
