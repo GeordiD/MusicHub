@@ -37,6 +37,45 @@
     padding-right: 5px;
 }
 
+#editor {
+    background-color: aliceblue;
+}
+
+.line_textarea {
+    resize: none;
+    width: 100%;
+
+    background-color: transparent;
+    text-align: left;
+    display: block;
+    border: none;
+
+}
+
+
+.test_cont {
+    white-space:nowrap;
+}
+
+.res-line {
+    display: block;
+}
+
+@media screen and (min-width:360px) {
+    .res-line {
+        display: inline;
+    }
+}
+
+#test_width_line {
+    postion:absolute;
+    height: 100%;
+    width: 5px;
+    background: grey;
+    margin-left: 360px; /* width + 40px */
+}
+
+/*-----*/
 .chart-content {
     padding: 25px;
     position: absolute;
@@ -64,26 +103,4 @@
 #chord_holder {
     color: red;
     line-height: 100%;
-}
-
-.test_cont {
-    white-space:nowrap;
-}
-
-.res-line {
-    display: block;
-}
-
-@media screen and (min-width:360px) {
-    .res-line {
-        display: inline;
-    }
-}
-
-#test_width_line {
-    postion:absolute;
-    height: 100%;
-    width: 5px;
-    background: grey;
-    margin-left: 360px; /* width + 40px */
 }

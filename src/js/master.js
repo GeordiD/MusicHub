@@ -1,6 +1,24 @@
 
+function setSelectionRange(input, selectionStart, selectionEnd) {
+    if (input.setSelectionRange) {
+        input.focus();
+        input.setSelectionRange(selectionStart, selectionEnd);
+    } else if (input.createTextRange) {
+        var range = input.createTextRange();
+        range.collapse(true);
+        range.moveEnd('character', selectionEnd);
+        range.moveStart('character', selectionStart);
+        range.select();
+    }
+}
 
-if (!String.prototype.splice) {
+function setCaretToPos(input, pos) {
+    setSelectionRange(input, pos, pos);
+}
+
+
+
+/*if (!String.prototype.splice) {
     String.prototype.splice = function (idx, rem, str) {
         return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
     };
@@ -14,7 +32,7 @@ if(!String.prototype.charMap) {
     }
 }
 
-function getTextFile(file, /*boolean*/removeLineBreaks)
+function getTextFile(file, /!*boolean*!/removeLineBreaks)
 {
     var allText;
 
@@ -49,4 +67,5 @@ function getTextFile(file, /*boolean*/removeLineBreaks)
 
 function centerChordOnDiv($div, $chord) {
     return $div.width()/2 + $div.get(0).offsetLeft - $chord.width()/2;
-}
+}*/
+

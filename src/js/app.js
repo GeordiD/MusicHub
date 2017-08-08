@@ -1,253 +1,88 @@
 $(document).ready(function() {
 
     //State initialization
-    mChordManager = new ChordManger();
-    $main = $('#readInDoc');
-
-    readChart(getTextFile("src/testFiles/test.txt", true));
+    $('#editor').append(html_line());
 });
 
-// --- Classes ---
+//this function is called each time a key is pressed inside a line_textarea
+function checkKeys(event, ths) {
+    var code = event.keyCode;
+    $this = $(ths);
 
-function ChordManger() {
+    if(code == 13) {
+        enter($this);
+        event.preventDefault();
 
-    var id = 0;
-
-    this.open = false; //bool: are we in the middle of placing a chord?
-
-    this.incrementId = function() {
-        id++;
-        return getId;
-    }
-    this.getId = function() {return id};
-
-    this.isOpen = function(/*boolean*/value) {
-        if(typeof value === "boolean") {
-            this.open = value;
-        }
-        return this.open;
-    }
-}
-
-// --- State Variables ---
-
-var mChordManager;
-var $main;
-
-// --- End Variables ---
-
-
-function readChart(sFile) {
-    //Declare all variables
-    var char,
-        /*string*/ sBuffer = "",
-        /*boolean*/ inTag = false;
-
-    for(var i = 0, len = sFile.length; i < len; i++) {
-        char = sFile[i];
-
-        if(inTag) {
-            if(char == "}") {
-                //process tag
-                processTag(sBuffer);
-                //Clear buffer
-                sBuffer = "";
-                //Mark as out of tag
-                inTag = false;
-            } else {
-                sBuffer += char;
-            }
-        } else {
-            if(char == "{") {
-                //Append the buffer
-                $main.append(sBuffer);
-                //Clear buffer
-                sBuffer = "";
-                //Mark as in tag
-                inTag = true;
-            } else {
-                sBuffer += char;
-            }
+    } else if(code == 8) {
+        if($this.val().length == 0) {
+            deleteLine($this);
+            event.preventDefault();
         }
 
+    } else if(code == 38) { //up arrow
+        move($this, true);
+        event.preventDefault();
+
+    } else if(code == 40) { //down arrow
+        move($this, false);
+        event.preventDefault();
     }
 }
 
+function enter($this) {
+    //we need the id so we can find it to focus on after adding it
+    var lineObj = html_line_id();
+    $this.after(lineObj[0]);
+    $('#' + lineObj[1]).find('.line_textarea').focus();
+}
 
-// --- Tag Processing ---
+function deleteLine($this) {
+    //if this isn't the only line, delete it
+    if($('#editor').find('.line_div').length > 1) {
+        move($this, true);
+        $this.remove();
+    }
+}
 
-function processTag(/*string*/sTag) {
-    //Declare all variables:
-    var sTagName, sTagContents,
-        isEnd = false;
+//move the cursor!
+function move($this, boolUp) {
+    $lineDivs = $('#editor').find('.line_div'); //save an array of lines in editor
 
-    //Remove braces
-    sTag = removeEnclosingBraces(sTag)
-    //Get tag name and contents
-    sTagName = getTagName(sTag);
-    sTagContents = sTag.substr(sTagName.length).trim();
-
-    //Check if it is an ending tag
-    if(sTagName.charAt(0) == '/') {
-        isEnd = true;
-        sTagName = sTagName.substr(1);
+    //set up directional variables
+    var limit = $lineDivs.length-1;
+    var delta = 1;
+    if(boolUp) {
+        limit = 0;
+        delta = -1;
     }
 
-    //Pass information to correct function
-    switch(sTagName) {
-        case "c":
-            isEnd ? processEndChordTag() : processChordTag(sTagContents);
-            break;
-        case "br":
-            processBreakTag(sTagContents);
-            break;
-        default:
-            console.log("unknown tag: " + sTagName);
-            return;
-    }
-
-    //Test
-    var test = "nothing";
-    console.log(test);
-}
-
-// Chord Tag ---
-
-function processChordTag(sTagContents) {
-    console.log("processChord");
-
-    //jobs:
-    //- Add 'add-chord' element to line above in non exists
-    //- Add chord to 'add-chord'
-    //- Add 'chord_loc' to this position
-}
-
-function processEndChordTag() {
-    console.log("processEndChord");
-
-    //jobs:
-    //- End 'chord_loc'
-    //- Position corresponding chord
-}
-
-// Break Tag ---
-
-function processBreakTag(sTagContents) {
-    $main.append("<br>");
-}
-
-// --- Helper Funcions ---
-
-function removeEnclosingBraces(/*string*/str) {
-    str = str.trim();
-
-    if(str.charAt(0) == '{') {
-        str = str.substr(1);
-    }
-
-    if(str.charAt(str.length-1) == '}') {
-        str = str.substring(0, str.length-1);
-    }
-
-    return str;
-}
-
-function getTagName(/*string*/str) {
-    var name = "",
-        i = 0;
-
-    //Make sure trimmed
-    str = str.trim();
-
-    //Get chars before space or '='
-    while(str.charAt(i) != ' ' && str.charAt(i) != '=' && i < str.length) {
-        name += str.charAt(i);
-        i++;
-    }
-
-    return name.trim();
-}
-
-// --- REFERENCE CODE ---
-
-//Needs to be cleaned up a lot, but works
-function chordsOverWordsGoodVersion() {
-    var textFileStr = getTextFile("src/testFiles/test.txt");
-    var parentDiv = $('#readInDoc');
-    var nHtml = "";
-
-    //State
-    var lastBreak = 0;
-    var hasChordHolder = false;
-    var chordHolderPos  = -1;
-    var insideTag = false;
-    var insertText;
-    var id = 0;
-    var offset;
-    var chords;
-    var chord, chord_loc;
-
-    for(var i = 0, len = textFileStr.length; i < len; i++) {
-        var char = textFileStr[i];
-
-        if(char === '{') {
-            //Read tag
-            offset = 0;
-            while(char !== '}') {
-                offset++;
-                char = textFileStr[i+offset];
-            }
-
-            i+=offset+1;
-            char = textFileStr[i];
-            insideTag = !insideTag;
-            if(insideTag) {
-                //Add start of span
-                nHtml+="<span class='chord_loc' id='chord_loc_" + id + "'>";
-
-                //Add chordholder if there isn't one
-                if(!hasChordHolder) {
-                    insertText = "<span class='add-chords'>";
-                    nHtml = nHtml.splice(lastBreak, 0, insertText);
-                    chordHolderPos = lastBreak+insertText.length;
-                    nHtml = nHtml.splice(chordHolderPos, 0, "</span><br>");
-                    hasChordHolder = true;
-                }
-
-                //Add chord to chordholder
-                insertText = "<span class='chord' id='chord_" + id + "'>G" + id + "</span>";
-                nHtml = nHtml.splice(chordHolderPos, 0, insertText);
-
-                id++;
-
-            } else {
-                //Add end of span
-                nHtml+="</span>";
-            }
+    //Find the line we are on and switch focus to the line either above or below
+    $lineDivs.each(function(i, obj) {
+        if($this.parent().attr('id') == $(obj).attr('id')) {
+            if(i == limit) return; //can't go up past the last line
+            $moveArea = $($lineDivs.get(i+delta)).find('.line_textarea').get(0);
+            setCaretToPos($moveArea, $this.prop("selectionStart"));
+            return false;
         }
-
-        if(char === "<") {
-            if(textFileStr.substring(i, i+4) === "<br>") {
-                lastBreak = nHtml.length + 4;
-                hasChordHolder = false;
-            }
-        }
-
-        nHtml+=char;
-    }
-    parentDiv.append(nHtml);
-
-    chords = $('.chord');
-    chords.each(function(i,x) {
-        var $chord = chords.eq(i);
-        var chordId = x.id.substring(6);
-        var $chord_loc = $('#chord_loc_' + chordId);
-
-        $chord.css("margin-left", centerChordOnDiv($chord_loc, $chord));
-
-
-        console.log($chord_loc.html());
     })
 }
 
 
+//-----templates------
+
+function html_line() {
+    return html_line_id()[0];
+}
+
+function html_line_id() {
+    var id = getNewId();
+    return ["<div id=\"" + id + "\" class=\"line_div\"> \
+                    <textarea class=\"line_textarea\" rows=\"1\" onkeydown='checkKeys(event, this)'>placeholder text</textarea> \
+                 </div>",
+            id];
+}
+
+var ID_GEN = 0;
+function getNewId() {
+    return "auto_gen_" + ID_GEN++;
+}
