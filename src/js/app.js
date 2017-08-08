@@ -1,13 +1,53 @@
+//-------classes-------
+
+class Line {
+    constructor() {
+        this.id = getNewId();
+        this.charLength = 0;
+    }
+
+    _html_line() {
+        return "<div id=\"" + this.id + "\" class=\"line_div\"> \
+                    <textarea class=\"line_textarea\" rows=\"1\" onkeydown='checkKeys(event, this)' placeholder='placeholder text'></textarea> \
+                 </div>"
+    }
+
+    appendLine($container) {
+        this.constructor.all_lines.push(this);
+        $container.append(this._html_line());
+    }
+
+    afterLine($container) {
+        this.constructor.all_lines.push(this);
+        $container.after(this._html_line());
+    }
+
+    removeLine() {
+        //TODO
+    }
+
+}
+
+Line.all_lines = [];
+
+
+var ID_GEN = 0;
+function getNewId() {
+    return "autogen" + ID_GEN++;
+}
+
 $(document).ready(function() {
 
     //State initialization
-    $('#editor').append(html_line());
+    new Line().appendLine($("#editor"));
+
+    console.log(Line.all_lines);
 });
 
 //this function is called each time a key is pressed inside a line_textarea
 function checkKeys(event, ths) {
     var code = event.keyCode;
-    $this = $(ths);
+    $this = $(ths); //textarea
 
     if(code == 13) {
         enter($this);
@@ -31,16 +71,18 @@ function checkKeys(event, ths) {
 
 function enter($this) {
     //we need the id so we can find it to focus on after adding it
-    var lineObj = html_line_id();
-    $this.after(lineObj[0]);
-    $('#' + lineObj[1]).find('.line_textarea').focus();
+    var lineObj = new Line();
+    $this = getParentLineDiv($this);
+    lineObj.afterLine($this);
+    $('#' + lineObj.id).find('.line_textarea').focus();
+    console.log(Line.all_lines);
 }
 
 function deleteLine($this) {
     //if this isn't the only line, delete it
     if($('#editor').find('.line_div').length > 1) {
         move($this, true);
-        $this.remove();
+        getParentLineDiv($this).remove();
     }
 }
 
@@ -67,22 +109,33 @@ function move($this, boolUp) {
     })
 }
 
+//---helper functions----
+
+function getParentLineDiv($this) {
+    if($this.attr('class') == 'line_div') {
+        return $this;
+    } else {
+        var $parents = $this.parents();
+        //I don't love this solution, cause this will be a frequently used funciton that depends
+        //   on low hierarchy depth
+        if($parents.length > 15) {
+            console.log("Warning: getParentLineDiv's $parents variable is " + $parents.length +
+                " long.  May need to rethink method?");
+        }
+        $return = false;
+        $parents.each(function(i, obj) {
+            if($(obj).attr('class') == 'line_div') {
+                $return = $(obj);
+                return false;
+            }
+        });
+        if($return == false) {
+            throw new Error("getParentLineDiv on " + $this + " couldn't find a lineDiv");
+        }
+        return $return;
+    }
+}
+
 
 //-----templates------
 
-function html_line() {
-    return html_line_id()[0];
-}
-
-function html_line_id() {
-    var id = getNewId();
-    return ["<div id=\"" + id + "\" class=\"line_div\"> \
-                    <textarea class=\"line_textarea\" rows=\"1\" onkeydown='checkKeys(event, this)'>placeholder text</textarea> \
-                 </div>",
-            id];
-}
-
-var ID_GEN = 0;
-function getNewId() {
-    return "auto_gen_" + ID_GEN++;
-}
