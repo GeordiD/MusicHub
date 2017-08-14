@@ -16,6 +16,13 @@ function setCaretToPos(input, pos) {
     setSelectionRange(input, pos, pos);
 }
 
+if(!Array.prototype.removeObj) {
+    Array.prototype.removeObj = function(obj) {
+        this.splice(this.indexOf(obj), 1);
+    };
+}
+
+
 
 
 /*if (!String.prototype.splice) {

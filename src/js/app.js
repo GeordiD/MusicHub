@@ -2,33 +2,112 @@
 
 class Line {
     constructor() {
-        this.id = getNewId();
-        this.charLength = 0;
+        this.mId = getNewId();
+        this.mTextarea = [];
+        this.defLineHeight = 0;
+        this.checkInit = false; //see if the line has been initialized
+        this.rowCount = 1;
     }
 
-    _html_line() {
-        return "<div id=\"" + this.id + "\" class=\"line_div\"> \
-                    <textarea class=\"line_textarea\" rows=\"1\" onkeydown='checkKeys(event, this)' placeholder='placeholder text'></textarea> \
-                 </div>"
+    _init() {
+        this.checkInit = true;
+        this.defLineHeight = this._get$Textarea(0).get(0).scrollHeight;
     }
 
-    appendLine($container) {
+    _$this() {
+        return $('#' + this.mId);
+    }
+
+    _htmlLine(string) {
+        return "<div id=\"" + this.mId + "\" class=\"line_div\">" +
+                    this._htmlTextarea(string) +
+                "</div>"
+    }
+
+    _htmlTextarea(string) {
+        if(typeof string == "undefined") string = "";
+        return "<textarea class=\"line_textarea\" rows=\"1\" onkeydown='onKeyDown(event, this)' onkeyup='onKeyUp(event, this)' placeholder='placeholder text'>" + string + "</textarea>"
+    }
+
+    _get$Textarea(index) {
+        if(typeof index == "undefined") index = 0;
+        if(this.mTextarea.length == 0) {
+            this.mTextarea = this._$this().find('.line_textarea');
+        }
+        return $(this.mTextarea[index]);
+    }
+
+    _pushRow() {
+        var $this = this._$this();
+        $this.append(this._htmlTextarea());
+        var textareas = $this.find('.line_textarea');
+        var newTextarea = textareas[textareas.length-1];
+        //TODO move text to new box and focus on it
+        this.rowCount++;
+    }
+
+    _popRow() {
+
+    }
+
+    appendLine($container, string) {
         this.constructor.all_lines.push(this);
-        $container.append(this._html_line());
+        $container.append(this._htmlLine(string));
+        this._init();
     }
 
     afterLine($container) {
         this.constructor.all_lines.push(this);
-        $container.after(this._html_line());
+        $container.after(this._htmlLine(""));
+        this._init();
     }
 
     removeLine() {
-        //TODO
+        this._$this().remove();
+        Line.all_lines.removeObj(this);
+        console.log(Line.all_lines);
+    }
+
+    onKeyUp(event, $textarea) {
+        var string = $textarea.val();
+        var key = event.key;
+
+        //TODO ignore non-letter keypresses
+
+        //if space is the only char, delete it
+        if(string.length == 1 && string[0] == " ") {
+            $textarea.val("");
+        }
+
+        //ignore double spaces
+        if(key == " " && string[string.length-2] == " ") {
+            $textarea.val(string.slice(0, string.length-1));
+        }
+
+        if($textarea.get(0).scrollHeight > this.defLineHeight) {
+            this._pushRow();
+        } else if(this.rowCount > 1) {
+            this._popRow();
+        }
     }
 
 }
-
 Line.all_lines = [];
+Line.get_line_from_$obj = function($obj) {
+    findId = getParentLineDiv($obj).attr('id');
+    solution = -1;
+    Line.all_lines.forEach(function(obj, index) {
+        if(findId == obj.mId) {
+            solution = obj;
+            return false;
+        }
+    });
+    if(solution == -1)  {
+        throw new Error("get_line_from_$obj did not find anything");
+    } else {
+        return solution;
+    }
+};
 
 
 var ID_GEN = 0;
@@ -39,34 +118,39 @@ function getNewId() {
 $(document).ready(function() {
 
     //State initialization
-    new Line().appendLine($("#editor"));
-
-    console.log(Line.all_lines);
+    new Line().appendLine($("#editor"), "The Splendor of the King");
+    new Line().appendLine($("#editor"), "Clothed in Majesty");
+    new Line().appendLine($("#editor"), "Let all the earth rejoice");
+    new Line().appendLine($("#editor"), "All the earth rejoice");
 });
 
 //this function is called each time a key is pressed inside a line_textarea
-function checkKeys(event, ths) {
-    var code = event.keyCode;
+function onKeyDown(event, ths) {
+    var key = event.key;
     $this = $(ths); //textarea
 
-    if(code == 13) {
+    if(key == "Enter") {
         enter($this);
         event.preventDefault();
 
-    } else if(code == 8) {
+    } else if(key == "Backspace") {
         if($this.val().length == 0) {
             deleteLine($this);
             event.preventDefault();
         }
 
-    } else if(code == 38) { //up arrow
+    } else if(key == "ArrowUp") {
         move($this, true);
         event.preventDefault();
 
-    } else if(code == 40) { //down arrow
+    } else if(key == "ArrowDown") {
         move($this, false);
         event.preventDefault();
     }
+}
+
+function onKeyUp(event, ths) {
+    Line.get_line_from_$obj($this).onKeyUp(event, $(ths));
 }
 
 function enter($this) {
@@ -74,7 +158,7 @@ function enter($this) {
     var lineObj = new Line();
     $this = getParentLineDiv($this);
     lineObj.afterLine($this);
-    $('#' + lineObj.id).find('.line_textarea').focus();
+    $('#' + lineObj.mId).find('.line_textarea').focus();
     console.log(Line.all_lines);
 }
 
@@ -82,8 +166,10 @@ function deleteLine($this) {
     //if this isn't the only line, delete it
     if($('#editor').find('.line_div').length > 1) {
         move($this, true);
-        getParentLineDiv($this).remove();
+        //console.log("@! " + $this);
+        Line.get_line_from_$obj($this).removeLine();
     }
+
 }
 
 //move the cursor!
