@@ -20,8 +20,8 @@ class Line {
 
     _htmlLine(string) {
         return "<div id=\"" + this.mId + "\" class=\"line_div\">" +
-                    this._htmlTextarea(string) +
-                "</div>"
+            this._htmlTextarea(string) +
+            "</div>"
     }
 
     _htmlTextarea(string) {
@@ -41,13 +41,24 @@ class Line {
         var $this = this._$this();
         $this.append(this._htmlTextarea());
         var textareas = $this.find('.line_textarea');
-        var newTextarea = textareas[textareas.length-1];
-        //TODO move text to new box and focus on it
+        var $ogTextarea = $(textareas[textareas.length - 2]);
+        var $newTextarea = $(textareas[textareas.length-1]);
+        $newTextarea.addClass('line_textarea_extra_row');
+
+        var string = $ogTextarea.val();
+        var lastSpace = string.lastIndexOf(" ");
+        $ogTextarea.val(string.substring(0, lastSpace));
+        $newTextarea.val(string.substring(lastSpace+1, string.length));
+        $newTextarea.focus();
         this.rowCount++;
     }
 
     _popRow() {
-
+        var $this = this._$this();
+        var textareas = $this.find('.line_textarea');
+        textareas[textareas.length - 2].focus();
+        textareas[textareas.length - 1].remove();
+        this.rowCount--;
     }
 
     appendLine($container, string) {
@@ -65,7 +76,6 @@ class Line {
     removeLine() {
         this._$this().remove();
         Line.all_lines.removeObj(this);
-        console.log(Line.all_lines);
     }
 
     onKeyUp(event, $textarea) {
@@ -86,7 +96,7 @@ class Line {
 
         if($textarea.get(0).scrollHeight > this.defLineHeight) {
             this._pushRow();
-        } else if(this.rowCount > 1) {
+        } else if(this.rowCount > 1 && $textarea.val() == "") {
             this._popRow();
         }
     }
@@ -103,7 +113,9 @@ Line.get_line_from_$obj = function($obj) {
         }
     });
     if(solution == -1)  {
-        throw new Error("get_line_from_$obj did not find anything");
+        console.log($obj);
+        throw new Error("get_line_from_$obj did " +
+            "not find anything; obj was " + $obj);
     } else {
         return solution;
     }
@@ -118,10 +130,11 @@ function getNewId() {
 $(document).ready(function() {
 
     //State initialization
-    new Line().appendLine($("#editor"), "The Splendor of the King");
-    new Line().appendLine($("#editor"), "Clothed in Majesty");
-    new Line().appendLine($("#editor"), "Let all the earth rejoice");
-    new Line().appendLine($("#editor"), "All the earth rejoice");
+    var $editor = $('#editor');
+    new Line().appendLine($editor, "The Splendor of the King The Splendor of the King The Splend");
+    new Line().appendLine($editor, "Clothed in Majesty");
+    new Line().appendLine($editor, "Let all the earth rejoice");
+    new Line().appendLine($editor, "All the earth rejoice");
 });
 
 //this function is called each time a key is pressed inside a line_textarea
