@@ -4,14 +4,16 @@ class Line {
     constructor() {
         this.mId = getNewId();
         this.mTextarea = [];
-        this.defLineHeight = 0;
-        this.checkInit = false; //see if the line has been initialized
-        this.rowCount = 1;
+        this.mDefLineHeight = 0;
+        this.mCheckInit = false; //see if the line has been initialized
+        this.mRowCount = 1;
     }
 
     _init() {
-        this.checkInit = true;
-        this.defLineHeight = this._get$Textarea(0).get(0).scrollHeight;
+        this.mDefLineHeight = this._get$Textarea(0).get(0).scrollHeight;
+        this.m$ChordSizer = $(this._$this().find('.line_chords_sizer')[0]);
+        console.log(this.m$ChordSizer);
+        this.mCheckInit = true;
     }
 
     _$this() {
@@ -20,8 +22,10 @@ class Line {
 
     _htmlLine(string) {
         return "<div id=\"" + this.mId + "\" class=\"line_div\">" +
-            this._htmlTextarea(string) +
-            "</div>"
+                    "<div class='line_chords'></div>" +
+                    "<div class='line_chords_sizer invisible'>TEST</div>" +
+                    this._htmlTextarea(string) +
+                "</div>"
     }
 
     _htmlTextarea(string) {
@@ -50,7 +54,7 @@ class Line {
         $ogTextarea.val(string.substring(0, lastSpace));
         $newTextarea.val(string.substring(lastSpace+1, string.length));
         $newTextarea.focus();
-        this.rowCount++;
+        this.mRowCount++;
     }
 
     _popRow() {
@@ -58,7 +62,7 @@ class Line {
         var textareas = $this.find('.line_textarea');
         textareas[textareas.length - 2].focus();
         textareas[textareas.length - 1].remove();
-        this.rowCount--;
+        this.mRowCount--;
     }
 
     appendLine($container, string) {
@@ -94,9 +98,9 @@ class Line {
             $textarea.val(string.slice(0, string.length-1));
         }
 
-        if($textarea.get(0).scrollHeight > this.defLineHeight) {
+        if($textarea.get(0).scrollHeight > this.mDefLineHeight) {
             this._pushRow();
-        } else if(this.rowCount > 1 && $textarea.val() == "") {
+        } else if(this.mRowCount > 1 && $textarea.val() == "") {
             this._popRow();
         }
     }
@@ -131,10 +135,11 @@ $(document).ready(function() {
 
     //State initialization
     var $editor = $('#editor');
-    new Line().appendLine($editor, "The Splendor of the King The Splendor of the King The Splend");
+    new Line().appendLine($editor, "The Splendor of the King");
     new Line().appendLine($editor, "Clothed in Majesty");
     new Line().appendLine($editor, "Let all the earth rejoice");
     new Line().appendLine($editor, "All the earth rejoice");
+    //console.log($editor.html());
 });
 
 //this function is called each time a key is pressed inside a line_textarea

@@ -41,6 +41,30 @@
     /*padding: 10px 10px 10px 10px;*/
 }
 
+.line_div {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: dashed 1px;
+}
+
+.line_chords {
+    position: relative;
+}
+
+.line_chords_sizer {
+    /*color: transparent;*/
+}
+
+.invisible {
+    display: none;
+}
+
+.chord {
+    position: absolute;
+}
+
 .line_textarea {
     resize: none;
     width: 100%;
@@ -48,11 +72,6 @@
     background-color: transparent;
     text-align: left;
     font-size: 15px;
-
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
 
     display: block;
     border: none;
@@ -98,31 +117,31 @@
 
 /*--OLD STUFF---*/
 
-.chart-content {
-    padding: 25px;
-    position: absolute;
-}
+/*.chart-content {*/
+    /*padding: 25px;*/
+    /*position: absolute;*/
+/*}*/
 
-.add-chords {
+/*.add-chords {*/
 
-}
+/*}*/
 
-.chord {
-    position: absolute;
-}
+/*.chord {*/
+    /*position: absolute;*/
+/*}*/
 
-.chord_loc {
+/*.chord_loc {*/
 
 
-}
+/*}*/
 
-#readindoc {
-    display: inline-block;
-    position: relative;
-    line-height: 100%;
-}
+/*#readindoc {*/
+    /*display: inline-block;*/
+    /*position: relative;*/
+    /*line-height: 100%;*/
+/*}*/
 
-#chord_holder {
-    color: red;
-    line-height: 100%;
-}
+/*#chord_holder {*/
+    /*color: red;*/
+    /*line-height: 100%;*/
+/*}*/
