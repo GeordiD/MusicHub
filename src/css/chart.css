@@ -97,6 +97,40 @@
     display: block;
 }
 
+.menu_chords {
+    position:absolute;
+    z-index: 10;
+
+    border: solid 1px #323232;
+    background-color: #f4f4f4;
+
+}
+
+.menu_chords_list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu_chords_list_item {
+    display: block;
+    float: left;
+    padding: 10px;
+    border-left: solid 1px grey;
+
+}
+
+.menu_chords_list_item a {
+    text-decoration: none;
+    color: inherit;
+    font-family: sans-serif;
+}
+
+.menu_chords_list_item:hover {
+    background-color: dimgray;
+    color: white;
+}
+
 @media screen and (min-width:360px) {
     .res-line {
         display: inline;

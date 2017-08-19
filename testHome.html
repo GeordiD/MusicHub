@@ -6,6 +6,7 @@
     <!--Import libraries-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="src/js/master.js" type="text/javascript"></script>
+    <script src="src/js/classes.js" type="text/javascript"></script>
     <script src="src/js/app.js" type="text/javascript"></script>
 
     <!--Import CSS-->
@@ -24,13 +25,13 @@
 
             <div>
                 <div id="editor" class="line_container">
-                    <div id="autogen0" class="line_div">
-                        <div class="line_chords">
+                    <!--<div id="autogen0" class="line_div">-->
+                        <!--<div class="line_chords">-->
 
-                        </div>
-                        <div class="line_chords_sizer invisible">TEST</div>
-                        <textarea class="line_textarea" rows="1" onkeydown="onKeyDown(event, this)" onkeyup="onKeyUp(event, this)" placeholder="placeholder text">The Splendor of the King</textarea>
-                    </div>
+                        <!--</div>-->
+                        <!--<div class="line_chords_sizer invisible">TEST</div>-->
+                        <!--<textarea class="line_textarea" rows="1" onkeydown="onKeyDown(event, this)" onkeyup="onKeyUp(event, this)" placeholder="placeholder text">The Splendor of the King</textarea>-->
+                    <!--</div>-->
                 </div>
 
                 <div id="readInDoc">
@@ -59,6 +60,16 @@
         </div>
     </div>
     <div id="test_width_line"></div>
+
+    <!--Put the context menu here so it's outside flow of doc-->
+    <nav class="menu_chords">
+        <ul class="menu_chords_list">
+            <li class="menu_chords_list_item"><a href="#">G</a></li>
+            <li class="menu_chords_list_item"><a href="#">C</a></li>
+            <li class="menu_chords_list_item"><a href="#">D</a></li>
+            <li class="menu_chords_list_item"><a href="#">Em</a></li>
+        </ul>
+    </nav>
 
 </body>
 
