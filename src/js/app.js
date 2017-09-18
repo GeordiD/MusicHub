@@ -4,7 +4,7 @@ $(document).ready(function() {
 
     //State initialization
     var $editor = $('#editor');
-    new Line().appendLine($editor, "The Splendor of the King");
+    new Line().appendLine($editor, "The <b>Splendor</b> of the King");
     new Line().appendLine($editor, "Clothed in Majesty");
     new Line().appendLine($editor, "Let all the earth rejoice");
     new Line().appendLine($editor, "All the earth rejoice");
@@ -21,7 +21,7 @@ function onKeyDown(event, ths) {
         event.preventDefault();
 
     } else if(key == "Backspace") {
-        if($this.val().length == 0) {
+        if($this.text().length == 0) {
             deleteLine($this);
             event.preventDefault();
         }
@@ -34,10 +34,16 @@ function onKeyDown(event, ths) {
         move($this, false);
         event.preventDefault();
     }
+
+    ChordMenu.destroyIfExists();
 }
 
 function onKeyUp(event, ths) {
-    Line.get_line_from_$obj($this).onKeyUp(event, $(ths));
+    try {
+        Line.get_line_from_$obj($this).onKeyUp(event, $(ths));
+    } catch (e) {
+        //ignore
+    }
 }
 
 //-----------
@@ -46,13 +52,20 @@ function onKeyUp(event, ths) {
 
 (function() {
 
+    function init() {
+        clickListener();
+    }
 
-
-    function addListener($lineobj) {
-        $lineobj.bind("contextmenu", function (event) {
-            console.log(event);
+    function clickListener() {
+        document.addEventListener("click", function(event) {
+            var button = event.which || event.button;
+            if(button === 1) {
+                ChordMenu.destroyIfExists();
+            }
         });
     }
+
+    init();
 })();
 
 
@@ -80,6 +93,7 @@ function deleteLine($this) {
 //move the cursor!
     function move($this, boolUp) {
         $lineDivs = $('#editor').find('.line_div'); //save an array of lines in editor
+        var thisID = Line.get_line_from_$obj($this).mId;
 
         //set up directional variables
         var limit = $lineDivs.length-1;
@@ -91,10 +105,11 @@ function deleteLine($this) {
 
         //Find the line we are on and switch focus to the line either above or below
         $lineDivs.each(function(i, obj) {
-            if($this.parent().attr('id') == $(obj).attr('id')) {
+            if(thisID == $(obj).attr('id')) {
                 if(i == limit) return; //can't go up past the last line
-                $moveArea = $($lineDivs.get(i+delta)).find('.line_textarea').get(0);
-                setCaretToPos($moveArea, $this.prop("selectionStart"));
+                $moveToBox = Line.get_line_from_$obj($($lineDivs.get(i+delta))).get$Textbox();
+                var cursorPos = getCaretCharacterOffsetWithin($this.get(0));
+                setCaretToPos($moveToBox, cursorPos);
                 return false;
             }
         })

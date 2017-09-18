@@ -4,16 +4,15 @@
 class Line {
     constructor() {
         this.mId = getNewId();
-        this.mTextarea = [];
         this.mDefLineHeight = 0;
         this.mCheckInit = false; //see if the line has been initialized
-        this.mRowCount = 1;
     }
 
+    //Called after append or after
     _init() {
-        this.mDefLineHeight = this._get$Textarea(0).get(0).scrollHeight;
+        this.mDefLineHeight = this.get$Textbox().get(0).scrollHeight;
         this.m$ChordSizer = $(this._$this().find('.line_chords_sizer')[0]);
-        this.mCheckInit = true
+        this.mCheckInit = true;
 
         var self = this;
         this._$this().bind("contextmenu", function() {
@@ -28,28 +27,29 @@ class Line {
 
     _htmlLine(string) {
         return "<div id=\"" + this.mId + "\" class=\"line_div\">" +
-            "<div class='line_chords'></div>" +
-            "<div class='line_chords_sizer invisible'>TEST</div>" +
-            this._htmlTextarea(string) +
+                "<div class='line_chords'></div>" +
+                "<div class='line_chords_sizer invisible'>TEST</div>" +
+                "<div class='line_text_container'>" +
+                    this._htmlTextbox(string) +
+                "</div>" +
             "</div>"
     }
 
-    _htmlTextarea(string) {
+    _htmlTextbox(string) {
         if(typeof string == "undefined") string = "";
-        return "<textarea class=\"line_textarea\" rows=\"1\" onkeydown='onKeyDown(event, this)' onkeyup='onKeyUp(event, this)' placeholder='placeholder text'>" + string + "</textarea>"
+        return "<div class=\"line_text_box line_text_style\" onkeydown='onKeyDown(event, this)' onkeyup='onKeyUp(event, this)' contenteditable='true'>" + string + "</div>"
     }
 
-    _get$Textarea(index) {
-        if(typeof index == "undefined") index = 0;
-        if(this.mTextarea.length == 0) {
-            this.mTextarea = this._$this().find('.line_textarea');
+    get$Textbox() {
+        if(this.mTextarea == null) {
+            this.mTextarea = this._$this().find('.line_text_box');
         }
-        return $(this.mTextarea[index]);
+        return $(this.mTextarea);
     }
 
     _pushRow() {
         var $this = this._$this();
-        $this.append(this._htmlTextarea());
+        $this.append(this._htmlTextbox());
         var textareas = $this.find('.line_textarea');
         var $ogTextarea = $(textareas[textareas.length - 2]);
         var $newTextarea = $(textareas[textareas.length-1]);
@@ -72,7 +72,7 @@ class Line {
     }
 
     _handleRightClick(event) {
-        console.log(window.getSelection().toString());
+        new ChordMenu(event, this);
     }
 
     appendLine($container, string) {
@@ -108,13 +108,13 @@ class Line {
             $textarea.val(string.slice(0, string.length-1));
         }
 
-        if($textarea.get(0).scrollHeight > this.mDefLineHeight) {
-            this._pushRow();
-        } else if(this.mRowCount > 1 && $textarea.val() == "") {
-            this._popRow();
-        }
+        //  I'm disabling this cause it's current implementation is bad
+        //if($textarea.get(0).scrollHeight > this.mDefLineHeight) {
+        //    this._pushRow();
+        //} else if(this.mRowCount > 1 && $textarea.val() == "") {
+        //    this._popRow();
+        //}
     }
-
 }
 Line.all_lines = [];
 Line.get_line_from_$obj = function($obj) {
@@ -133,6 +133,46 @@ Line.get_line_from_$obj = function($obj) {
         return solution;
     }
 };
+
+class ChordMenu {
+    constructor(event, lineObj) {
+        this.lineObj = lineObj;
+        this.menu = document.querySelector('#chord-menu');
+
+        if(this.constructor.oldChordMenu != null) {
+            this.constructor.oldChordMenu.destroy();
+        }
+        this.constructor.oldChordMenu = this;
+
+        event.preventDefault();
+        this.menu.classList.add("menu_chords__on");
+
+        var textbox = this.lineObj.get$Textbox();
+        var selectionStart = textbox.prop("selectionStart");
+        var selectionEnd = textbox.prop("selectionEnd");
+
+        //var text = this.mLineClone.text();
+        //this.lineObj.mLineClone.text(
+        //    text.slice(0,selectionStart) + "<span>" +
+        //    text.slice(selectionStart, selectionEnd) + "</span>" +
+        //    text.slice(selectionEnd));
+
+    }
+
+
+
+    destroy() {
+        this.menu.classList.remove("menu_chords__on");
+        this.constructor.oldChordMenu = null;
+    }
+}
+ChordMenu.oldChordMenu = null;
+ChordMenu.destroyIfExists = function() {
+    if(ChordMenu.oldChordMenu != null) {
+        ChordMenu.oldChordMenu.destroy();
+    }
+}
+
 
 
 var ID_GEN = 0;
