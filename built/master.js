@@ -1,10 +1,8 @@
-
 function setCaretToPos(input, pos) {
     input.get(0).focus();
     pos = Math.min(pos, input.text().length);
     input.caret('pos', pos);
 }
-
 /* http://bit.ly/2wEEgC2 */
 function getCaretCharacterOffsetWithin(element) {
     var caretOffset = 0;
@@ -20,7 +18,8 @@ function getCaretCharacterOffsetWithin(element) {
             preCaretRange.setEnd(range.endContainer, range.endOffset);
             caretOffset = preCaretRange.toString().length;
         }
-    } else if ( (sel = doc.selection) && sel.type != "Control") {
+    }
+    else if ((sel = doc.selection) && sel.type != "Control") {
         var textRange = sel.createRange();
         var preCaretTextRange = doc.body.createTextRange();
         preCaretTextRange.moveToElementText(element);
@@ -29,16 +28,11 @@ function getCaretCharacterOffsetWithin(element) {
     }
     return caretOffset;
 }
-
-if(!Array.prototype.removeObj) {
-    Array.prototype.removeObj = function(obj) {
+if (!Array.prototype.removeObj) {
+    Array.prototype.removeObj = function (obj) {
         this.splice(this.indexOf(obj), 1);
     };
 }
-
-
-
-
 /*if (!String.prototype.splice) {
     String.prototype.splice = function (idx, rem, str) {
         return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
@@ -89,4 +83,3 @@ function getTextFile(file, /!*boolean*!/removeLineBreaks)
 function centerChordOnDiv($div, $chord) {
     return $div.width()/2 + $div.get(0).offsetLeft - $chord.width()/2;
 }*/
-
