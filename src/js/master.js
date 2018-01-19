@@ -1,4 +1,3 @@
-
 function setCaretToPos(input, pos) {
     input.get(0).focus();
     pos = Math.min(pos, input.text().length);
@@ -29,14 +28,8 @@ function getCaretCharacterOffsetWithin(element) {
     }
     return caretOffset;
 }
-
-
-interface Array<T> {
-    removeObj(elem: T): void;
-}
-
 if (!Array.prototype.removeObj) {
-    Array.prototype.removeObj = function<T> (obj: T) : void {
+    Array.prototype.removeObj = function (obj) {
         this.splice(this.indexOf(obj), 1);
     };
 }
@@ -90,3 +83,4 @@ function getTextFile(file, /!*boolean*!/removeLineBreaks)
 function centerChordOnDiv($div, $chord) {
     return $div.width()/2 + $div.get(0).offsetLeft - $chord.width()/2;
 }*/
+//# sourceMappingURL=master.js.map

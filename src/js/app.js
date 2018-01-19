@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     //State initialization
     var $editor = $('#editor');
@@ -9,7 +8,7 @@ $(document).ready(function () {
     //console.log($editor.html());
 });
 //this function is called each time a key is pressed inside a line_textarea
-function onKeyDown(event: KeyboardEvent, ths: HTMLDivElement) {
+function onKeyDown(event, ths) {
     var key = event.key;
     var $this = $(ths); //textarea
     if (key == "Enter") {
@@ -32,7 +31,7 @@ function onKeyDown(event: KeyboardEvent, ths: HTMLDivElement) {
     }
     //TODO ChordMenu.destroyIfExists();
 }
-function onKeyUp(event: KeyboardEvent, ths: HTMLTextAreaElement) {
+function onKeyUp(event, ths) {
     try {
         Line.get_line_from_$obj($(ths)).onKeyUp(event, $(ths));
     }
@@ -113,7 +112,7 @@ function getParentLineDiv($this) {
             console.log("Warning: getParentLineDiv's $parents variable is " + $parents.length +
                 " long.  May need to rethink method?");
         }
-        var $return: JQuery = null;
+        var $return = null;
         $parents.each(function (i, obj) {
             if ($(obj).attr('class') == 'line_div') {
                 $return = $(obj);
@@ -127,3 +126,4 @@ function getParentLineDiv($this) {
     }
 }
 //-----templates------
+//# sourceMappingURL=app.js.map

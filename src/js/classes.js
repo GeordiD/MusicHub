@@ -1,21 +1,11 @@
-
 //-------classes-------
-class Line {
-
-    static all_lines: Line[] = [];
-    mId: string;
-    mDefLineHeight: number;
-    mCheckInit: boolean;
-    m$ChordSizer: JQuery;
-    mTextarea: JQuery;
-    mRowCount: number;
-
-    constructor() {
+var Line = /** @class */ (function () {
+    function Line() {
         this.mId = getNewId();
         this.mDefLineHeight = 0;
         this.mCheckInit = false; //see if the line has been initialized
     }
-    _init() {
+    Line.prototype._init = function () {
         this.mDefLineHeight = this.get$Textbox().get(0).scrollHeight;
         this.m$ChordSizer = $(this._$this().find('.line_chords_sizer')[0]);
         this.mCheckInit = true;
@@ -24,13 +14,11 @@ class Line {
             //console.log("here2");
             self._handleRightClick(event);
         });
-    }
-
-    _$this() {
+    };
+    Line.prototype._$this = function () {
         return $('#' + this.mId);
-    }
-
-    _htmlLine(string: string) {
+    };
+    Line.prototype._htmlLine = function (string) {
         return "<div id=\"" + this.mId + "\" class=\"line_div\">" +
             "<div class='line_chords'></div>" +
             "<div class='line_chords_sizer invisible'>TEST</div>" +
@@ -38,22 +26,19 @@ class Line {
             this._htmlTextBox(string) +
             "</div>" +
             "</div>";
-    }
-
-    _htmlTextBox(x: string) {
+    };
+    Line.prototype._htmlTextBox = function (x) {
         if (typeof x == "undefined") {
-          x = "";
+            x = "";
         }
         return "<div class=\"line_text_box line_text_style\" onkeydown='onKeyDown(event, this)' onkeyup='onKeyUp(event, this)' contenteditable='true'>" + x + "</div>";
-    }
-
-    get$Textbox() {
+    };
+    Line.prototype.get$Textbox = function () {
         if (this.mTextarea == null) {
             this.mTextarea = this._$this().find('.line_text_box');
         }
         return $(this.mTextarea);
-    }
-
+    };
     /*
     _pushRow() {
         var $this = this._$this();
@@ -78,31 +63,26 @@ class Line {
         this.mRowCount--;
     }
     */
-
-    _handleRightClick(event: Event) {
+    Line.prototype._handleRightClick = function (event) {
         console.log("you right-clicked. good job");
         //new ChordMenu(event, this);
-    }
-
-    appendLine($container: JQuery, string: string) {
+    };
+    Line.prototype.appendLine = function ($container, string) {
         Line.all_lines.push(this);
         $container.append(this._htmlLine(string));
         this._init();
-    }
-
-    afterLine($container: JQuery) {
+    };
+    Line.prototype.afterLine = function ($container) {
         Line.all_lines.push(this);
         $container.after(this._htmlLine(""));
         this._init();
-    }
-
-    removeLine() {
+    };
+    Line.prototype.removeLine = function () {
         this._$this().remove();
         Line.all_lines.removeObj(this);
-    }
-
-    onKeyUp(event: KeyboardEvent, $textarea: JQuery) {
-        var str: string = $textarea.val() as string;
+    };
+    Line.prototype.onKeyUp = function (event, $textarea) {
+        var str = $textarea.val();
         var key = event.key;
         //TODO ignore non-letter keypresses
         //if space is the only char, delete it
@@ -119,11 +99,10 @@ class Line {
         //} else if(this.mRowCount > 1 && $textarea.val() == "") {
         //    this._popRow();
         //}
-    }
-
-    static get_line_from_$obj($obj: JQuery) {
+    };
+    Line.get_line_from_$obj = function ($obj) {
         var findId = getParentLineDiv($obj).attr('id');
-        var solution: Line = null;
+        var solution = null;
         Line.all_lines.forEach(function (obj, index) {
             if (findId == obj.mId) {
                 solution = obj;
@@ -137,24 +116,18 @@ class Line {
         else {
             return solution;
         }
-    }
-}
-
-class ChordMenu  {
-    lineObj: Line;
-    menu: HTMLElement;
-    static oldChordMenu: ChordMenu;
-
-    constructor(event: Event, lineObject: Line) {
+    };
+    Line.all_lines = [];
+    return Line;
+}());
+var ChordMenu = /** @class */ (function () {
+    function ChordMenu(event, lineObject) {
         this.lineObj = lineObject;
         this.menu = document.querySelector('#chord-menu');
-
         ChordMenu.destroyIfExists();
         ChordMenu.oldChordMenu = this;
-
         event.preventDefault();
         this.menu.classList.add("menu_chords__on");
-
         var textbox = this.lineObj.get$Textbox();
         var selectionStart = textbox.prop("selectionStart");
         var selectionEnd = textbox.prop("selectionEnd");
@@ -164,24 +137,21 @@ class ChordMenu  {
         //    text.slice(selectionStart, selectionEnd) + "</span>" +
         //    text.slice(selectionEnd));
     }
-
-    destroy() {
+    ChordMenu.prototype.destroy = function () {
         this.menu.classList.remove("menu_chords__on");
         ChordMenu.oldChordMenu = null;
-    }
-
-    static destroyIfExists() {
-        if(ChordMenu.oldChordMenu != null) {
+    };
+    ChordMenu.destroyIfExists = function () {
+        if (ChordMenu.oldChordMenu != null) {
             ChordMenu.oldChordMenu.destroy();
         }
-    }
-}
-
+    };
+    return ChordMenu;
+}());
 var ID_GEN = 0;
 function getNewId() {
     return "autogen" + ID_GEN++;
 }
-
 /*
 var Line = (function () {
     function Line() {
@@ -301,7 +271,6 @@ Line.get_line_from_$obj = function ($obj) {
     }
 };
 */
-
 /*
 var ChordMenu = (function () {
     function ChordMenu(event, lineObj) {
@@ -335,5 +304,4 @@ ChordMenu.destroyIfExists = function () {
     }
 };
 */
-
-
+//# sourceMappingURL=classes.js.map

@@ -116,6 +116,8 @@ Line.get_line_from_$obj = function ($obj) {
         return solution;
     }
 };
+
+
 var ChordMenu = (function () {
     function ChordMenu(event, lineObj) {
         this.lineObj = lineObj;

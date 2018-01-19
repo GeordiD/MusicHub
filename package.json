@@ -1,0 +1,24 @@
+{
+  "name": "MusicHubSource",
+  "version": "1.0.0",
+  "description": "Open source musical scores",
+  "main": "index.js",
+  "dependencies": {
+    "@types/jquery": "^3.2.18"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeordiD/MusicHub.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GeordiD/MusicHub/issues"
+  },
+  "homepage": "https://github.com/GeordiD/MusicHub#readme"
+}

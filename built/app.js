@@ -1,14 +1,12 @@
-path;
-"../../typings/jquery.d.ts" /  >
-    $(document).ready(function () {
-        //State initialization
-        var $editor = $('#editor');
-        new Line().appendLine($editor, "The <b>Splendor</b> of the King");
-        new Line().appendLine($editor, "Clothed in Majesty");
-        new Line().appendLine($editor, "Let all the earth rejoice");
-        new Line().appendLine($editor, "All the earth rejoice");
-        //console.log($editor.html());
-    });
+$(document).ready(function () {
+    //State initialization
+    var $editor = $('#editor');
+    new Line().appendLine($editor, "The <b>Splendor</b> of the King");
+    new Line().appendLine($editor, "Clothed in Majesty");
+    new Line().appendLine($editor, "Let all the earth rejoice");
+    new Line().appendLine($editor, "All the earth rejoice");
+    //console.log($editor.html());
+});
 //this function is called each time a key is pressed inside a line_textarea
 function onKeyDown(event, ths) {
     var key = event.key;
